@@ -1,5 +1,5 @@
-#ifndef __DECODER_HPP__
-#define __DECODER_HPP__
+#ifndef __DECODERQMC_HPP__
+#define __DECODERQMC_HPP__
 
 #include <iostream>
 #include <cstdio>
@@ -9,11 +9,6 @@
 
 namespace dec
 {
-    std::string fileNameWithoutExt(std::string filename)
-    {
-        std::string ret=filename.substr(0,filename.rfind('.'));
-        return ret;
-    }
     class seed_map
     {
     private:
@@ -64,7 +59,7 @@ namespace dec
             return ret;
         }
     };
-    class decoder
+    class decoderQMC
     {
     private:
         seed_map seedMap;
@@ -72,7 +67,7 @@ namespace dec
         FILE *opath;
 
     public:
-        decoder(std::string in, std::string out)
+        decoderQMC(std::string in, std::string out)
         {
             ipath = fopen(in.c_str(), "rb");
             if (ipath == nullptr)
@@ -82,7 +77,7 @@ namespace dec
             if (opath == nullptr)
                 std::cerr << "Write File Failed : " << out << std::endl;
         }
-        ~decoder()
+        ~decoderQMC()
         {
             fclose(ipath);
             fclose(opath);

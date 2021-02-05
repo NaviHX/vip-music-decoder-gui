@@ -1,5 +1,5 @@
-#ifndef __DECODER_HPP__
-#define __DECODER_HPP__
+#ifndef __DECODERNCM_HPP__
+#define __DECODERNCM_HPP__
 
 #include "aes.h"
 #include "cJSON.h"
@@ -16,11 +16,6 @@
 
 namespace dec
 {
-    std::string fileNameWithoutExt(std::string filename)
-    {
-        std::string ret = filename.substr(0, filename.rfind('.'));
-        return ret;
-    }
     static void aesEcbDecrypt(const unsigned char *key, std::string &src, std::string &dst)
     {
         int n, i;
@@ -113,7 +108,7 @@ namespace dec
             cJSON_Delete(mRaw);
         }
     };
-    class decoder
+    class decoderNCM
     {
     private:
         const unsigned char coreKey[17] = {0x68, 0x7A, 0x48, 0x52, 0x41, 0x6D, 0x73, 0x6F, 0x35, 0x6B, 0x49, 0x6E, 0x62, 0x61, 0x78, 0x57, 0};
@@ -225,7 +220,7 @@ namespace dec
     public:
         const std::string &getIPath() { return ipath; }
         const std::string &getOPath() { return opath; }
-        decoder(std::string const &path)
+        decoderNCM(std::string const &path)
         {
             if ((mFile = fopen(path.c_str(), "rb")) == 0)
                 std::cerr << "Open File Error\n";
@@ -288,7 +283,7 @@ namespace dec
                 std::cerr << "No album picture : " << path.c_str() << std::endl;
             }
         }
-        ~decoder()
+        ~decoderNCM()
         {
             if (mMetadata)
                 delete mMetadata;
@@ -296,7 +291,8 @@ namespace dec
         }
         void dump()
         {
-            opath = fileNameWithoutExt(ipath);
+            // opath = fileNameWithoutExt(ipath);
+            opath=ipath.substr(0, ipath.rfind('.'));
             FILE *w = NULL;
             int n = 0x8000, i = 0;
             unsigned char buffer[n];
